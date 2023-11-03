@@ -1,0 +1,39 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+theory :
+Hierarchical clustering is a data clustering technique that creates a hierarchical structure of clusters by iteratively merging or dividing data points based on their similarity. It forms a tree-like structure called a dendrogram, enabling a multi-level view of data relationships. Hierarchical clustering does not require a predefined number of clusters and is used for tasks like taxonomy, document clustering, and image segmentation. It can be computationally intensive for large datasets due to pairwise distance calculations.
+
+code : agglomerative 
+Agglomerative clustering is a hierarchical clustering approach that begins with individual data points as separate clusters and progressively merges them into larger clusters based on their similarity. It's a "bottom-up" method in hierarchical clustering.
+
+# Generate synthetic data
+np.random.seed(0)
+data = np.concatenate([
+    np.random.normal(0, 1, (50, 2)),
+    np.random.normal(5, 1, (50, 2))
+])
+
+# Perform hierarchical clustering
+linkage_data = linkage(data, method='ward')
+
+# Plot the hierarchical clustering dendrogram
+plt.figure(figsize=(10, 6))
+dendrogram(linkage_data, truncate_mode='level', p=3)
+plt.xlabel("Sample Index")
+plt.ylabel("Distance")
+plt.title("Hierarchical Clustering Dendrogram")
+plt.show()
+
+# Agglomerative Clustering
+agg_clustering = AgglomerativeClustering(n_clusters=2, affinity='euclidean', linkage='ward')
+labels = agg_clustering.fit_predict(data)
+
+# Visualize the clustering result
+plt.scatter(data[:, 0], data[:, 1], c=labels, cmap='viridis')
+plt.xlabel('Feature 1')
+plt.ylabel('Feature 2')
+plt.title('Agglomerative Clustering Result')
+plt.show()
